@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/IndicateView.iml" filepath="$PROJECT_DIR$/IndicateView.iml" />
+      <module fileurl="file://D:\Users\ck\AndroidStudioProjects\test2\StaggeredGridLayout\IndicateView.iml" filepath="D:\Users\ck\AndroidStudioProjects\test2\StaggeredGridLayout\IndicateView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StaggeredGridLayout.iml" filepath="$PROJECT_DIR$/StaggeredGridLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
