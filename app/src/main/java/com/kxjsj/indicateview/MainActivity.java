@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new StaggeredManager().setCount(3));
+        recyclerView.setLayoutManager(new WrapStaggeredManager().setCount(3));
         recyclerView.setAdapter(new RecyclerView.Adapter() {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,25 +33,37 @@ public class MainActivity extends AppCompatActivity {
             public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
                 SimpleViewHolder holde= (SimpleViewHolder) holder;
                 holde.setText(R.id.tv,position+"");
+                holde.itemView.setBackgroundColor(getcolor(position));
+                holde.itemView.getLayoutParams().height=60+position%4*30;
             }
 
             @Override
             public int getItemViewType(int position) {
-                if(position%4==0)
-                    return 1;
-                if(position%5==0){
-                    return 1;
-                }else
-                    return 3;
+//                if(position%4==0)
+//                    return 1;
+//                if(position%5==0){
+//                    return 1;
+//                }else
+//                    return 3;
+                return 0;
             }
 
             @Override
             public int getItemCount() {
-                return 500;
+                return Integer.MAX_VALUE;
             }
         });
 
 
+    }
+
+    private int getcolor(int position){
+        if(position%3==0)
+                    return 0xff00ff00;
+                if(position%3==2){
+                    return 0xffffff00;
+                }else
+                    return 0xffff00ff;
     }
     public void VV(View v){
         recyclerView.scrollToPosition(100);

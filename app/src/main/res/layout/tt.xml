@@ -4,9 +4,8 @@
 <TextView
     android:id="@+id/tv"
     android:text="年底时"
-    android:background="#f00"
     android:layout_margin="3dp"
     android:layout_width="100dp"
     android:textColor="#fff"
-    android:layout_height="100dp" />
+    android:layout_height="match_parent" />
 </FrameLayout>

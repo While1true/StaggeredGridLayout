@@ -4,7 +4,9 @@
     <modules>
       <module fileurl="file://D:\Users\ck\AndroidStudioProjects\test2\StaggeredGridLayout\IndicateView.iml" filepath="D:\Users\ck\AndroidStudioProjects\test2\StaggeredGridLayout\IndicateView.iml" />
       <module fileurl="file://$PROJECT_DIR$/StaggeredGridLayout.iml" filepath="$PROJECT_DIR$/StaggeredGridLayout.iml" />
+      <module fileurl="file://D:\Github\StaggeredGridLayout\StaggeredGridLayout.iml" filepath="D:\Github\StaggeredGridLayout\StaggeredGridLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\Github\StaggeredGridLayout\app\app.iml" filepath="D:\Github\StaggeredGridLayout\app\app.iml" />
     </modules>
   </component>
 </project>
