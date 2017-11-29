@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                     return 0xffff00ff;
     }
     public void VV(View v){
-        wrapStaggeredManager.setCount(wrapStaggeredManager.getCount()+1);
     }
     public void VV2(View v){
         recyclerView.smoothScrollToPosition(99);

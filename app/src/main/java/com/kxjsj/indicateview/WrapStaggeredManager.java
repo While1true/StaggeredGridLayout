@@ -20,7 +20,7 @@ import java.util.List;
 public class WrapStaggeredManager extends RecyclerView.LayoutManager {
 
     private int count;
-    int[] offsets = new int[count];;
+    int[] offsets;
     int scrolls;
     int maxHeight;
     SparseArray<View> attchedViews=new SparseArray<>();
@@ -35,27 +35,13 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
     private OrientationHelper helper2;
     private int eachWidth;
 
-    public int getCount() {
-        return count;
-    }
-
     public WrapStaggeredManager setCount(int count) {
         this.count = count;
-        reset();
+        offsets = new int[count];
         return this;
     }
     RecyclerView.Adapter newAdapter;
 
-    private void reset(){
-        offsets = new int[count];
-        scrolls=0;
-        maxHeight=0;
-        attchedViews.clear();
-        eachWidth = helper.getTotalSpace() / count;
-        attchedViews.clear();
-        layouts.getArray().clear();
-        requestLayout();
-    }
     public int getScrolls() {
         return scrolls;
     }
@@ -99,7 +85,11 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
     }
 
     private void init(final RecyclerView.Recycler recycler, RecyclerView.State state) {
-
+        if(offsets==null){
+            offsets=new int[count];
+        }
+        attchedViews.clear();
+        eachWidth = helper.getTotalSpace() / count;
     }
 
     private void caculate(final RecyclerView.Recycler recycler, int dy) {
@@ -175,7 +165,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
      * @param state
      */
     private void layout(RecyclerView.Recycler recycler, RecyclerView.State state, int dy) {
-        System.out.println("zzzzzz "+scrolls);
+        System.out.println("zzzzzz"+scrolls);
         Rect layoutRange = new Rect(getPaddingLeft(), getPaddingTop() + scrolls, helper.getTotalSpace() + getPaddingLeft(), helper2.getTotalSpace() + getPaddingTop() + scrolls);
         int itemCount = state.getItemCount();
         if (dy >= 0) {
