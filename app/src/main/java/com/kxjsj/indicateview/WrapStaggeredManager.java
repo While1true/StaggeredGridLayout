@@ -20,7 +20,7 @@ import java.util.List;
 public class WrapStaggeredManager extends RecyclerView.LayoutManager {
 
     private int count;
-    int[] offsets;
+    int[] offsets = new int[count];;
     int scrolls;
     int maxHeight;
     SparseArray<View> attchedViews=new SparseArray<>();
@@ -35,12 +35,28 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
     private OrientationHelper helper2;
     private int eachWidth;
 
+    public int getCount() {
+        return count;
+    }
+
     public WrapStaggeredManager setCount(int count) {
         this.count = count;
-        offsets = new int[count];
+        reset();
         return this;
     }
     RecyclerView.Adapter newAdapter;
+
+    private void reset(){
+        offsets = new int[count];
+        scrolls=0;
+        maxHeight=0;
+        attchedViews.clear();
+        layouts.getArray().clear();
+        requestLayout();
+    }
+    public int getScrolls() {
+        return scrolls;
+    }
 
     @Override
     public void onAdapterChanged(RecyclerView.Adapter oldAdapter, RecyclerView.Adapter newAdapter) {
@@ -81,7 +97,6 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
     }
 
     private void init(final RecyclerView.Recycler recycler, RecyclerView.State state) {
-        offsets = new int[count];
         attchedViews.clear();
         eachWidth = helper.getTotalSpace() / count;
     }
@@ -97,7 +112,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
             addView(scrap);
             measureChildWithMargins(scrap, eachWidth, 0);
             int decoratedMeasuredHeight = getDecoratedMeasuredHeight(scrap);
-            removeAndRecycleView(scrap, recycler);
+            detachAndScrapView(scrap, recycler);
             int rowNumber = getMinIndex();
             Rect rect = layouts.get(i);
             rect.set(rowNumber * eachWidth, offsets[rowNumber], (rowNumber + 1) * eachWidth, offsets[rowNumber] + decoratedMeasuredHeight);
@@ -159,6 +174,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
      * @param state
      */
     private void layout(RecyclerView.Recycler recycler, RecyclerView.State state, int dy) {
+        System.out.println("zzzzzz "+scrolls);
         Rect layoutRange = new Rect(getPaddingLeft(), getPaddingTop() + scrolls, helper.getTotalSpace() + getPaddingLeft(), helper2.getTotalSpace() + getPaddingTop() + scrolls);
         int itemCount = state.getItemCount();
         if (dy >= 0) {
@@ -179,7 +195,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
             Rect rect = layouts.get(position);
             if(!Rect.intersects(rect,layoutrect)){
                 attchedViews.remove(position);
-                removeAndRecycleView(childAt,recycler);
+                detachAndScrapView(childAt,recycler);
                 childCount--;
             }
         }
@@ -315,6 +331,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
         }
         return dy;
     }
+
 
     @Override
     public void scrollToPosition(int position) {

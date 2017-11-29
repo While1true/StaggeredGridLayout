@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cc"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.kxjsj.indicateview.MainActivity">
@@ -9,16 +10,19 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-<Button
-    android:onClick="VV"
-    android:text="scrool"
-    android:layout_width="100dp"
-    android:layout_height="100dp" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/bottom_sheet_behavior" />
+
     <Button
-        android:onClick="VV2"
-        android:layout_gravity="bottom"
-        android:text="Smoothscrool"
         android:layout_width="100dp"
-        android:layout_height="100dp" />
-</FrameLayout>
+        android:layout_height="100dp"
+        android:onClick="VV"
+        android:text="添加排数" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:onClick="VV2"
+        android:text="流畅滑到100" />
+</android.support.design.widget.CoordinatorLayout>

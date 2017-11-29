@@ -1,5 +1,7 @@
 package com.kxjsj.indicateview;
 
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,13 +13,37 @@ import android.view.ViewGroup;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private CoordinatorLayout cc;
+    private WrapStaggeredManager wrapStaggeredManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        cc = (CoordinatorLayout) findViewById(R.id.cc);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new WrapStaggeredManager().setCount(3));
+        wrapStaggeredManager = new WrapStaggeredManager();
+        recyclerView.setLayoutManager(wrapStaggeredManager.setCount(3));
+       final BottomSheetBehavior from =BottomSheetBehavior.from(recyclerView);
+        from.setPeekHeight(300);
+        from.setHideable(true);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                System.out.println(wrapStaggeredManager.getScrolls()==0);
+                if(wrapStaggeredManager.getScrolls()==0){
+                    ((CoordinatorLayout.LayoutParams) recyclerView.getLayoutParams()).setBehavior(from);
+                    from.setHideable(true);
+                }else{
+                   from.setHideable(false);
+                    ((CoordinatorLayout.LayoutParams) recyclerView.getLayoutParams()).setBehavior(null);
+                }
+            }
+
+        });
+
         recyclerView.setAdapter(new RecyclerView.Adapter() {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     return 0xffff00ff;
     }
     public void VV(View v){
-        recyclerView.scrollToPosition(100);
+        wrapStaggeredManager.setCount(wrapStaggeredManager.getCount()+1);
     }
     public void VV2(View v){
         recyclerView.smoothScrollToPosition(99);
