@@ -23,8 +23,6 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
     int[] offsets;
     int scrolls;
     int maxHeight;
-    private boolean plant;
-
     SparseArray<View> attchedViews=new SparseArray<>();
 
     Pool<Rect> layouts = new Pool<>(new Pool.Factory<Rect>() {
@@ -42,12 +40,6 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
         offsets = new int[count];
         return this;
     }
-
-    public WrapStaggeredManager setPlant(boolean plant) {
-        this.plant = plant;
-        return this;
-    }
-
     RecyclerView.Adapter newAdapter;
 
     @Override
@@ -249,7 +241,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
         for (int i = min; i < itemCount; i++) {
 
             if (getRect(recycler, i).isEmpty()) {
-                layouts.getArray().removeAt(layouts.size() - 1);
+                layouts.getArray().remove(i);
                 caculate(recycler, 0);
             }
 
