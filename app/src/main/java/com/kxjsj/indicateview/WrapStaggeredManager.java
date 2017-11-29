@@ -51,6 +51,8 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
         scrolls=0;
         maxHeight=0;
         attchedViews.clear();
+        eachWidth = helper.getTotalSpace() / count;
+        attchedViews.clear();
         layouts.getArray().clear();
         requestLayout();
     }
@@ -97,8 +99,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
     }
 
     private void init(final RecyclerView.Recycler recycler, RecyclerView.State state) {
-        attchedViews.clear();
-        eachWidth = helper.getTotalSpace() / count;
+
     }
 
     private void caculate(final RecyclerView.Recycler recycler, int dy) {
