@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 
 /**
@@ -38,10 +39,13 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
     public WrapStaggeredManager setCount(int count) {
         this.count = count;
         offsets = new int[count];
+        scrolls=0;
+        layouts.getArray().clear();
+        requestLayout();
         return this;
     }
     RecyclerView.Adapter newAdapter;
-
+    RecyclerView.Recycler recycler;
     public int getScrolls() {
         return scrolls;
     }
@@ -60,6 +64,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+        this.recycler=recycler;
         if (state.getItemCount() == 0) {
             detachAndScrapAttachedViews(recycler);
         }
@@ -119,7 +124,29 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
         maxHeight = getMaxHeight();
     }
 
-
+    private int  caculate2Position(final RecyclerView.Recycler recycler, final int position) {
+        long start = System.currentTimeMillis();
+        A:
+        for (int i = layouts.size(); i < position&&position<getItemCount(); i++) {
+            /**
+             * 之测量不同type的大小 计算位置
+             */
+            View scrap = recycler.getViewForPosition(i);
+            addView(scrap);
+            measureChildWithMargins(scrap, eachWidth, 0);
+            int decoratedMeasuredHeight = getDecoratedMeasuredHeight(scrap);
+            detachAndScrapView(scrap, recycler);
+            int rowNumber = getMinIndex();
+            Rect rect = layouts.get(i);
+            rect.set(rowNumber * eachWidth, offsets[rowNumber], (rowNumber + 1) * eachWidth, offsets[rowNumber] + decoratedMeasuredHeight);
+            offsets[rowNumber] = offsets[rowNumber] + rect.height();
+            if (System.currentTimeMillis()-start>600) {
+                break A;
+            }
+        }
+        maxHeight = getMaxHeight();
+        return layouts.size()-1;
+    }
     /**
      * 获取最小的指针位置
      *
@@ -332,6 +359,9 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
         } else if (position < 0) {
             temp = 0;
         }
+        if(layouts.size()<position+1){
+            temp=caculate2Position(recycler,position);
+        }
         int top = layouts.get(temp).top;
         if (top > maxHeight - helper2.getTotalSpace()) {
             top = maxHeight - helper2.getTotalSpace();
@@ -341,11 +371,18 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
     }
 
     @Override
-    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {//平滑的移动到某一项
+    public void smoothScrollToPosition(final RecyclerView recyclerView, RecyclerView.State state,  int position) {//平滑的移动到某一项
+        if(layouts.size()<position+1){
+            position = caculate2Position(recycler, position);
+        }
+            run2Position(recyclerView, position);
+    }
+    private void run2Position(RecyclerView recyclerView,int position){
         int top = layouts.get(position).top;
         int needscroll = top - scrolls;
         recyclerView.smoothScrollBy(0, needscroll);
     }
+
 
     private static class Pool<T> {
         SparseArray<T> array;

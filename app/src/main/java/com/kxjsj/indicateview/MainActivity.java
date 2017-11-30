@@ -91,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
                 }else
                     return 0xffff00ff;
     }
-    public void VV(View v){
+    public void VV(View v){wrapStaggeredManager.setCount(8);
     }
     public void VV2(View v){
-        recyclerView.smoothScrollToPosition(99);
+        recyclerView.smoothScrollToPosition(100000);
     }
 }
