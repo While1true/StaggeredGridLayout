@@ -1,11 +1,13 @@
 package com.kxjsj.indicateview;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,8 +27,17 @@ public class MainActivity extends AppCompatActivity {
         wrapStaggeredManager = new WrapStaggeredManager();
         recyclerView.setLayoutManager(wrapStaggeredManager.setCount(3));
        final BottomSheetBehavior from =BottomSheetBehavior.from(recyclerView);
-        from.setPeekHeight(300);
+        from.setPeekHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,100,getResources().getDisplayMetrics()));
+        from.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            }
 
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                System.out.println(slideOffset);
+            }
+        });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
