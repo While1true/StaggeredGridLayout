@@ -1,17 +1,13 @@
 package com.kxjsj.indicateview;
 
 import android.graphics.Rect;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-
 
 /**
  * 自适应高度瀑布流 由于是局部加载
@@ -37,9 +33,13 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
     private int eachWidth;
 
     public WrapStaggeredManager setCount(int count) {
+        /**
+         * 计算大概位置
+         */
+        scrolls=scrolls*this.count/count;
         this.count = count;
         offsets = new int[count];
-        scrolls=0;
+
         layouts.getArray().clear();
         requestLayout();
         return this;
@@ -108,7 +108,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
             addView(scrap);
             measureChildWithMargins(scrap, eachWidth, 0);
             int decoratedMeasuredHeight = getDecoratedMeasuredHeight(scrap);
-            detachAndScrapView(scrap, recycler);
+            removeAndRecycleView(scrap, recycler);
             int rowNumber = getMinIndex();
             Rect rect = layouts.get(i);
             rect.set(rowNumber * eachWidth, offsets[rowNumber], (rowNumber + 1) * eachWidth, offsets[rowNumber] + decoratedMeasuredHeight);
@@ -213,7 +213,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
             Rect rect = layouts.get(position);
             if(!Rect.intersects(rect,layoutrect)){
                 attchedViews.remove(position);
-                detachAndScrapView(childAt,recycler);
+                removeAndRecycleView(childAt,recycler);
                 childCount--;
             }
         }
@@ -350,7 +350,6 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
         return dy;
     }
 
-
     @Override
     public void scrollToPosition(int position) {
         int temp = position;
@@ -383,6 +382,75 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
         recyclerView.smoothScrollBy(0, needscroll);
     }
 
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable parcelable = super.onSaveInstanceState();
+        Mystate mystate = new Mystate(parcelable).setPosition(scrolls);
+        return mystate;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+
+        Mystate state1 = (Mystate) state;
+        super.onRestoreInstanceState(state1.getSuperState());
+        scrolls=state1.getPosition();
+
+    }
+
+    private static class Mystate implements Parcelable {
+        int position;
+        Parcelable superState;
+        public Mystate setPosition(int position){
+            this.position=position;
+            return this;
+        }
+
+        public Parcelable getSuperState() {
+            return superState;
+        }
+
+        public void setSuperState(Parcelable superState) {
+            this.superState = superState;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+
+        public Mystate(Parcelable superState) {
+            this.superState=superState;
+        }
+
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.position);
+            dest.writeParcelable(this.superState, flags);
+        }
+
+        protected Mystate(Parcel in) {
+            this.position = in.readInt();
+            this.superState = in.readParcelable(Parcelable.class.getClassLoader());
+        }
+
+        public static final Parcelable.Creator<Mystate> CREATOR = new Parcelable.Creator<Mystate>() {
+            @Override
+            public Mystate createFromParcel(Parcel source) {
+                return new Mystate(source);
+            }
+
+            @Override
+            public Mystate[] newArray(int size) {
+                return new Mystate[size];
+            }
+        };
+    }
 
     private static class Pool<T> {
         SparseArray<T> array;

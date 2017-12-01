@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
         recyclerView.setAdapter(new RecyclerView.Adapter() {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -94,6 +93,6 @@ public class MainActivity extends AppCompatActivity {
     public void VV(View v){wrapStaggeredManager.setCount(8);
     }
     public void VV2(View v){
-        recyclerView.smoothScrollToPosition(100000);
+        recyclerView.smoothScrollToPosition(500);
     }
 }
