@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(wrapStaggeredManager.setCount(3));
        final BottomSheetBehavior from =BottomSheetBehavior.from(recyclerView);
         from.setPeekHeight(300);
-        from.setHideable(true);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -35,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(wrapStaggeredManager.getScrolls()==0);
                 if(wrapStaggeredManager.getScrolls()==0){
                     ((CoordinatorLayout.LayoutParams) recyclerView.getLayoutParams()).setBehavior(from);
-                    from.setHideable(true);
                 }else{
-                   from.setHideable(false);
                     ((CoordinatorLayout.LayoutParams) recyclerView.getLayoutParams()).setBehavior(null);
                 }
             }
