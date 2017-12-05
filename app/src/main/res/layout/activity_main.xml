@@ -13,16 +13,31 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/bottom_sheet_behavior" />
 
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:onClick="VV"
-        android:text="添加排数" />
 
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="bottom"
-        android:onClick="VV2"
-        android:text="流畅滑到100" />
+
+    <com.kxjsj.indicateview.ViewDrag
+        android:id="@+id/viewDrag"
+        android:layout_width="match_parent"
+        android:translationZ="1dp"
+        android:layout_height="match_parent">
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="right"
+            android:onClick="VV"
+            android:text="添加排数" />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="right|bottom"
+            android:onClick="VV2"
+            android:text="流畅滑到100" />
+        <TextView
+            android:background="#ffff0000"
+            android:layout_width="100dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="100dp" />
+    </com.kxjsj.indicateview.ViewDrag>
+
 </android.support.design.widget.CoordinatorLayout>

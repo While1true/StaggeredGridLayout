@@ -106,7 +106,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
              */
             View scrap = recycler.getViewForPosition(i);
             addView(scrap);
-            measureChildWithMargins(scrap, eachWidth, 0);
+            measureChildWithMargins(scrap, eachWidth*(count-1), 0);
             int decoratedMeasuredHeight = getDecoratedMeasuredHeight(scrap);
             removeAndRecycleView(scrap, recycler);
             int rowNumber = getMinIndex();
@@ -133,7 +133,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
              */
             View scrap = recycler.getViewForPosition(i);
             addView(scrap);
-            measureChildWithMargins(scrap, eachWidth, 0);
+            measureChildWithMargins(scrap, eachWidth*(count-1), 0);
             int decoratedMeasuredHeight = getDecoratedMeasuredHeight(scrap);
             detachAndScrapView(scrap, recycler);
             int rowNumber = getMinIndex();
@@ -231,7 +231,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
                 View viewForPosition = recycler.getViewForPosition(i);
                 addView(viewForPosition);
                 attchedViews.put(i,viewForPosition);
-                measureChildWithMargins(viewForPosition, eachWidth, 0);
+                measureChildWithMargins(viewForPosition, eachWidth*(count-1), 0);
                 layoutDecoratedWithMargins(viewForPosition, layout.left, layout.top - scrolls, layout.right, layout.bottom - scrolls);
             }
             if (layout.bottom <= layoutRange.top) {
@@ -284,7 +284,7 @@ public class WrapStaggeredManager extends RecyclerView.LayoutManager {
                 View viewForPosition = recycler.getViewForPosition(i);
                 addView(viewForPosition);
                 attchedViews.put(i,viewForPosition);
-                measureChildWithMargins(viewForPosition, eachWidth, 0);
+                measureChildWithMargins(viewForPosition, eachWidth*(count-1), 0);
                 layoutDecoratedWithMargins(viewForPosition, layout.left, layout.top - scrolls, layout.right, layout.bottom - scrolls);
             }
             if (layout.top >= layoutRange.bottom) {

@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,20 +25,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         cc = (CoordinatorLayout) findViewById(R.id.cc);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        ViewDrag viewDrag = (ViewDrag) findViewById(R.id.viewDrag);
+        viewDrag.setSettingViewCallBack(new ViewDrag.SettingViewCallBack() {
+            @Override
+            void startSetting(View view) {
+                Toast.makeText(view.getContext(),"动画开始",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            void endSetting(View view) {
+                Toast.makeText(view.getContext(),"动画结束",Toast.LENGTH_SHORT).show();
+            }
+        });
         wrapStaggeredManager = new WrapStaggeredManager();
         recyclerView.setLayoutManager(wrapStaggeredManager.setCount(3));
        final BottomSheetBehavior from =BottomSheetBehavior.from(recyclerView);
         from.setPeekHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,100,getResources().getDisplayMetrics()));
-        from.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                System.out.println(slideOffset);
-            }
-        });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
